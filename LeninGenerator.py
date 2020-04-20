@@ -22,4 +22,6 @@ def scrapequotes():
             for j in i.splitlines():
                 if "Lenin" in j:
                     break
-                de.write(j + "\n")
+                de.write(j)
+            de.write('\n')
+scrapequotes()
