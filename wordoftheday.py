@@ -89,19 +89,32 @@ def getheadlines():
     allheadlines.append(titles)
     return(titles)
 news = getheadlines()
-wordlist = []
-nouns = ['NN','NNS','NNP','NNPS']
-prev = [0,0]
-print(len(news))
-for headline in news:
-    for word in headline.split():
-        word = word.lower()
-        wordlist.append(word)
-for word in wordlist:
-    word = TextBlob(word)
-    if word.tags == []:
-        continue
-    if word.tags[0][1] in nouns:
-        if wordlist.count(word) > prev[1]:
-            prev = [word.tags[0][1],wordlist.count(word)]
-print(prev)
+nouse = []
+def findmostusedword(excluded):
+    wordlist = []
+    used = []
+    nouns = ['NN','NNS','NNP','NNPS']
+    prev = [0,0]
+    for headline in news:
+        for word in headline.split():
+            word = word.lower()
+            wordlist.append(word)
+    for word in wordlist:
+        if not word in nouse:
+            word = TextBlob(word)
+            if word.tags == []:
+                continue
+            if word.tags[0][1] in nouns:
+                if wordlist.count(word) > prev[1]:
+                    prev = [word.tags[0][0],wordlist.count(word)]             
+    return(prev)
+mostused = findmostusedword(nouse)
+nouse.append(mostused[0])
+print("Right now, the most used word in article titles is " + mostused[0] + ", being used " + str(mostused[1]) + " times!")
+again = input("return the next most used? [y]/n")
+while again == "y" or again == "":
+    mostused = findmostusedword(nouse)
+    print("Right now, the next most used word in article titles is " + mostused[0] + ", being used " + str(mostused[1]) + " times!")
+    nouse.append(mostused[0])
+    again = input("return the next most used? [y]/n")
+print("Thank you for Using the 'word of the day' script!")
