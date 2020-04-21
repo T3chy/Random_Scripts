@@ -117,8 +117,8 @@ def main(top):
         mostused.append(findmostusedword(nouse))
         nouse.append(mostused[i][0])
     return(mostused)
-def gettop3():
-    return(main(3))
+def gettopx(x):
+    return(main(x))
 #print("Right now, the most used word in article titles is " + mostused[0] + ", being used " + str(mostused[1]) + " times!")
 # again = input("return the next most used? [y]/n")
 # while again == "y" or again == "":
