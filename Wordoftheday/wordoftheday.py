@@ -57,11 +57,13 @@ def main(top):
     def getheadlines():
         allheadlines = []
         print('Fetching Business Insider...')
-        request = requests.get('https://www.reuters.com/finance')
+        request = requests.get('https://www.reuters.com/')
         soup = BeautifulSoup(request.text, 'html.parser')
-        headlines = soup.findAll('h3',"story-title")
+        headlines = soup.findAll('h2',"story-title")
         titles = []
-        titles.append('reuters')
+        for i in headlines:
+            titles.append(i.get_text().strip('\n').strip('\t').strip(' '))
+        headlines = soup.findAll('h2',"story-title")
         for i in headlines:
             titles.append(i.get_text().strip('\n').strip('\t').strip(' '))
         allheadlines.append(titles)
@@ -72,24 +74,25 @@ def main(top):
             titles.append(i.get_text().strip('\n').strip('\t').strip(' '))
         allheadlines.append(titles)
         print('Fetching NY Times...')
-        request = requests.get('https://www.nytimes.com/section/business')
+        request = requests.get('https://www.nytimes.com')
         soup = BeautifulSoup(request.text, 'html.parser')
-        headlines = soup.findAll('h2',"css-y3otqb e134j7ei0")
+        headlines = soup.findAll('h2',"css-1vvhd4r esl82me0")
         for i in headlines:
             titles.append(i.get_text().strip('\n').strip('\t').strip(' '))
         allheadlines.append(titles)
         print('Fetching The Washington Post...')
-        request = requests.get('https://www.washingtonpost.com/business/?itid=nb_hp_business')
+        request = requests.get('https://www.washingtonpost.com/')
         soup = BeautifulSoup(request.text, 'html.parser')
-        headlines = soup.findAll('div',{'class':"flex-stack normal-air col-lg-8 col-md-8 col-sm-8 col-xs-8 flex-stack-text"})
+        headlines = soup.findAll('div',{'class':"headline"})
         for i in headlines:
-            titles.append(i.get_text().strip(re.search('By.*',i.get_text()).group(0)).strip('\n').strip('\t').strip(' '))
+            titles.append(i.get_text().strip('\n').strip('\t').strip(' '))
         allheadlines.append(titles)
         print('Fetching The Guardian...')
-        request = requests.get('https://www.theguardian.com/us/business')
+        request = requests.get('https://www.theguardian.com/us')
         soup = BeautifulSoup(request.text, 'html.parser')
+        headlines = soup.findAll('a',{'class':"u-faux-block-link__overlay js-headline-text"})
         for i in headlines:
-            titles.append(i.get_text().strip(re.search('By.*',i.get_text()).group(0)).strip('\n').strip('\t').strip(' '))
+            titles.append(i.get_text().strip('\n').strip('\t').strip(' '))
         allheadlines.append(titles)
         return(titles)
     def findmostusedword(excluded):
@@ -110,7 +113,7 @@ def main(top):
                         prev = [word.tags[0][0],wordlist.count(word)]             
         return(prev)
     news = getheadlines()
-    nouse = ['—']
+    nouse = ['—','i']
     mostused = []
     print("Counting Occurences...")
     for i in range(top):
