@@ -110,7 +110,7 @@ def main(top):
                         prev = [word.tags[0][0],wordlist.count(word)]             
         return(prev)
     news = getheadlines()
-    nouse = []
+    nouse = ['—']
     mostused = []
     print("Counting Occurences...")
     for i in range(top):

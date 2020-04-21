@@ -10,4 +10,5 @@ third = Label(window, text="3rd: " + words[2][0] + " with " + str(words[2][1]) +
 first.grid(column=0,row=0)
 second.grid(column=0,row=1)
 third.grid(column=0,row=2)
+window.attributes("-topmost", True)
 window.mainloop()
